@@ -35,7 +35,7 @@ router.get("/download/:id", auth, async (req, res) => {
 // Route pour récupérer toutes les images d'un utilisateur
 router.get("/all", async (req, res) => {
 	try {
-		const images = await Picture.find();
+		const images = await Picture.find({ isPrivate: false });
 		res.json(images);
 	} catch (error) {
 		console.error(error);
@@ -43,10 +43,10 @@ router.get("/all", async (req, res) => {
 	}
 });
 
-router.get("/all/:user", async (req, res) => {
-	const { token } = req.params;
+router.get("/all/:token", async (req, res) => {
+	console.log(req.params.token)
 	try {
-		const images = await Picture.find({ token });
+		const images = await Picture.find({ userToken: req.params.token });
 		res.json(images);
 	} catch (error) {
 		console.error(error);
@@ -75,6 +75,43 @@ router.post('/upload', upload.single('image'), async (req, res) => {
 		console.error(error);
 		res.status(500).json({ message: 'Server error' });
 	}
+});
+
+router.delete('/delete/:filename', upload.single('image'), async (req, res) => {
+	const { filename } = req.params;
+	
+	try {
+		const deletedImage = await Picture.deleteOne({ filename });
+
+		if (deletedImage) {
+			res.json({ message: 'Image deleted successfully' });
+		} else {
+			res.status(404).json({ message: 'Image not found' });
+		}
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: 'Server error' });
+	}
+});
+
+router.put('/modify/:filename', upload.single('image'), async (req, res) => {
+	const { filename } = req.params;
+
+  try {
+    const image = await Picture.findOne({ filename });
+
+    if (!image) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
+
+    image.isPrivate = !image.isPrivate;
+    await image.save();
+
+    res.json({ message: 'Image updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
 // Route pour mettre à jour une image
