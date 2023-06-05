@@ -110,60 +110,49 @@ export default function Test() {
   return (
     <div>
       <Container maxWidth="md" style={{ marginTop: 150, margin: 20 }}>
-        {userConnected &&
-          <Button variant="contained" color="error" onClick={() => deleteUser()}>Supprimer mon compte</Button>
-        }
         <Link href="/login">
           <Button variant="contained" color="primary">Page de connexion</Button>
         </Link>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            variant="outlined"
-            style={{ width: 120, margin: 10, border: isPrivate ? '4px solid black' : "4px solid green" }}
-          >
-            Image privée
-          </Button>
-          <Button
-            variant="outlined"
-            style={{ width: 120, margin: 10, border: !isPrivate ? '4px solid black' : "4px solid green" }}
-          >
-            Image publique
-          </Button>
-        </div>
-        <div>
-          <input type="file" id="img" name="image" accept="image/*" onChange={handleImageUpload} />
-          <button onClick={handleUpload}>Upload Image</button>
-        </div>
-        <div>
-          <h2>Toutes les images publiques</h2>
-          <div style={{display: 'flex'}}>
-            {images.map((image) => (
-              <div stlye={{ width: 200, height: 200 }}>
-                <img
-                  style={{ maxWidth: 200, maxHeight: 200 }}
-                  key={image._id}
-                  src={`http://localhost:3000/uploads/${image.filename}`}
-                  alt={image.originalName}
-                />
+        {userConnected &&
+          <>
+            <Button variant="contained" color="error" onClick={() => deleteUser()}>Supprimer mon compte</Button>
+            <div style={{margin: 10}}>
+              <input type="file" id="img" name="image" accept="image/*" onChange={handleImageUpload} />
+              <button disabled={selectedImage === null} onClick={handleUpload}>Upload Image</button>
+            </div>
+            <div>
+              <h2>Toutes les images publiques</h2>
+              <div style={{ display: 'flex' }}>
+                {images.map((image) => (
+                  <div stlye={{ width: 200, height: 200 }}>
+                    <img
+                      style={{ maxWidth: 200, maxHeight: 200 }}
+                      key={image._id}
+                      src={`http://localhost:3000/uploads/${image.filename}`}
+                      alt={image.originalName}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <h2>Mes images</h2>
-          <div style={{ display: 'flex' }}>
-            {imagesOwner.map((image) => (
-              <div style={{ display: 'flex', flexDirection: "column", width: 200, height: 280, border: '1px solid grey', padding: 20, margin: 10 }}>
-                <Button onClick={() => deletePicture(image.filename)} fullWidth variant="contained" color="error">Supprimer</Button>
-                <img
-                  style={{ maxWidth: 200, maxHeight: 200 }}
-                  key={image._id}
-                  src={`http://localhost:3000/uploads/${image.filename}`}
-                  alt={image.originalName}
-                />
-                <FormControlLabel control={<Switch checkd={image.isPrivate === true} onClick={() => switchState(image.filename)} />} label="Image privée" />
+              <h2>Mes images</h2>
+              <div style={{ display: 'flex' }}>
+                {imagesOwner.map((image) => (
+                  <div style={{ display: 'flex', flexDirection: "column", width: 200, height: 280, border: '1px solid grey', padding: 20, margin: 10 }}>
+                    <Button onClick={() => deletePicture(image.filename)} fullWidth variant="contained" color="error">Supprimer</Button>
+                    <img
+                      style={{ maxWidth: 200, maxHeight: 200 }}
+                      key={image._id}
+                      src={`http://localhost:3000/uploads/${image.filename}`}
+                      alt={image.originalName}
+                    />
+                    <FormControlLabel control={<Switch checkd={image.isPrivate === true} onClick={() => switchState(image.filename)} />} label="Image privée" />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          </>
+        }
+        {!userConnected && <h2>Vous n'etes pas connecté</h2>}
       </Container>
     </div>
   )
