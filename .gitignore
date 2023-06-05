@@ -1,0 +1,26 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore client-side dependencies
+client/node_modules/
+
+# Ignore server-side dependencies
+server/node_modules/
+
+# Ignore build output
+client/build/
+server/build/
+
+# Ignore environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore log files
+*.log
+
+# Ignore operating system files
+.DS_Store
+Thumbs.db

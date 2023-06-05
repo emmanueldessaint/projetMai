@@ -1,0 +1,19 @@
+{
+  "name": "picturesnws",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/Eryans/picturesNWS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eryans/picturesNWS/issues"
+  },
+  "homepage": "https://github.com/Eryans/picturesNWS#readme"
+}
